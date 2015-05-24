@@ -2,9 +2,9 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	id="com.simplec.plugins.powercontrols"
-	version="1.1.0">
+	version="1.1.1">
 
-	<name>Android Power Controls</name>
+	<name>AndroidPowerControls</name>
 	
 	<description>
 		This plugin has power user controls.  For example, you can reboot an Android device.
@@ -29,9 +29,9 @@
 	      </feature>
 	    </config-file>
         
-        <config-file target="AndroidManifest.xml" parent="/*">
+        <!--config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.REBOOT" />
-        </config-file>
+        </config-file-->
 	         
 	    <source-file src="src/android/com/simplec/phonegap/plugins/powercontrols/PowerControls.java" target-dir="src/com/simplec/phonegap/plugins/powercontrols"/>
 	  </platform>
