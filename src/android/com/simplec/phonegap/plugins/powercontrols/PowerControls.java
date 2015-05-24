@@ -12,6 +12,7 @@ import android.os.PowerManager;
 
 public class PowerControls extends CordovaPlugin {
 	private static final String REBOOT = "reboot";
+	private static final String EXIT = "exit";
 
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize(cordova, webView);
@@ -22,6 +23,14 @@ public class PowerControls extends CordovaPlugin {
         	PowerManager pm = (PowerManager) webView.getContext().getSystemService(Context.POWER_SERVICE);
         	pm.reboot(args.getString(0));
             return true;
+        }  
+        
+        if (EXIT.equals(action)) {
+        	try {
+        		android.os.Process.killProcess(android.os.Process.myPid());
+        	} catch (Exception e) {
+        	}
+        	return true;
         }
 
     	callbackContext.error(action + " is not a supported function.");
