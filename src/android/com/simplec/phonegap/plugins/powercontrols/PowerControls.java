@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.PowerManager;
 
@@ -27,6 +28,10 @@ public class PowerControls extends CordovaPlugin {
         if (REBOOT.equals(action)) {
         	PowerManager pm = (PowerManager) webView.getContext().getSystemService(Context.POWER_SERVICE);
         	pm.reboot(args.getString(0));
+        	
+        	Intent intent = new Intent("com.simplec.android.service.installer.REBOOT");
+        	webView.getContext().startActivity(intent);
+        	
             return true;
         }  
         
