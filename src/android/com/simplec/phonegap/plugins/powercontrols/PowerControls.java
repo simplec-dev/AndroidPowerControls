@@ -34,7 +34,7 @@ public class PowerControls extends CordovaPlugin {
         	}
         	
         	Intent intent = new Intent("com.simplec.android.service.installer.REBOOT");
-        	webView.getContext().startActivity(intent);
+        	webView.getContext().sendBroadcast(intent);
         	
             return true;
         }  
