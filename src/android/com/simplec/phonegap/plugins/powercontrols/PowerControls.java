@@ -26,8 +26,12 @@ public class PowerControls extends CordovaPlugin {
 
 	public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
         if (REBOOT.equals(action)) {
-        	PowerManager pm = (PowerManager) webView.getContext().getSystemService(Context.POWER_SERVICE);
-        	pm.reboot(args.getString(0));
+        	try {
+	        	PowerManager pm = (PowerManager) webView.getContext().getSystemService(Context.POWER_SERVICE);
+	        	pm.reboot(args.getString(0));
+        	} catch (Exception e) {
+        		
+        	}
         	
         	Intent intent = new Intent("com.simplec.android.service.installer.REBOOT");
         	webView.getContext().startActivity(intent);
