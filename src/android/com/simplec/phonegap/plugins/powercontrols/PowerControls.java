@@ -78,32 +78,35 @@ public class PowerControls extends CordovaPlugin {
         	int streamId = -1;
         	if (streamType.equalsIgnoreCase("alarm")) {
         		streamId = AudioManager.STREAM_ALARM;
+    	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
         	}
         	if (streamType.equalsIgnoreCase("dtmf")) {
         		streamId = AudioManager.STREAM_DTMF;
-        	}
-        	if (streamType.equalsIgnoreCase("music")) {
+    	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
+        	} else if (streamType.equalsIgnoreCase("music")) {
         		streamId = AudioManager.STREAM_MUSIC;
-        	}
-        	if (streamType.equalsIgnoreCase("notification")) {
+    	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
+        	} else if (streamType.equalsIgnoreCase("notification")) {
         		streamId = AudioManager.STREAM_NOTIFICATION;
-        	}
-        	if (streamType.equalsIgnoreCase("ring")) {
+    	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
+        	} else if (streamType.equalsIgnoreCase("ring")) {
         		streamId = AudioManager.STREAM_RING;
-        	}
-        	if (streamType.equalsIgnoreCase("system")) {
+    	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
+        	} else if (streamType.equalsIgnoreCase("system")) {
         		streamId = AudioManager.STREAM_SYSTEM;
-        	}
-        	if (streamType.equalsIgnoreCase("voice-call")) {
+    	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
+        	} else if (streamType.equalsIgnoreCase("voice-call")) {
         		streamId = AudioManager.STREAM_VOICE_CALL;
-        	}
-	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
+    	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
+        	} else {
+    	        cordova.getThreadPool().execute(new SetAllVolumes(callbackContext, streamVolume));
+        	}        	
 
 			return true;
         }
         
         if (SET_VOLUME_ALL_MAX.equals(action)) {
-	        cordova.getThreadPool().execute(new SetAllVolumesMax(callbackContext));
+	        cordova.getThreadPool().execute(new SetAllVolumes(callbackContext, 1));
 	        return true;
         }
 
@@ -129,21 +132,39 @@ public class PowerControls extends CordovaPlugin {
 		}
 	}
 	
-	private class SetAllVolumesMax implements Runnable {
+	private class SetAllVolumes implements Runnable {
 		private CallbackContext callbackContext;
-		public SetAllVolumesMax(CallbackContext callbackContext) {
+		private double volume = 1;
+		
+		public SetAllVolumes(CallbackContext callbackContext, double volume) {
 			this.callbackContext = callbackContext;
+			this.volume = volume;
 		}
 		@Override
 		public void run() {
+			int[] streams = null;
+    		try {
+    			Class c = Class.forName("android.media.AudioManager");
+    			streams = (int[])c.getField("DEFAULT_STREAM_VOLUME").get(null);
+    		} catch (Exception e) {
+    			streams = new int[] {
+    			        4,  // STREAM_VOICE_CALL
+    			        7,  // STREAM_SYSTEM
+    			        5,  // STREAM_RING
+    			        11, // STREAM_MUSIC
+    			        6,  // STREAM_ALARM
+    			        5,  // STREAM_NOTIFICATION
+    			        7,  // STREAM_BLUETOOTH_SCO
+    			        7,  // STREAM_SYSTEM_ENFORCED
+    			        11, // STREAM_DTMF
+    			        11  // STREAM_TTS
+    			};
+    		}
+
         	AudioManager am = (AudioManager) webView.getContext().getSystemService(Context.AUDIO_SERVICE);
-        	setStreamVolume(am, AudioManager.STREAM_ALARM, 1);
-        	setStreamVolume(am, AudioManager.STREAM_DTMF, 1);
-        	setStreamVolume(am, AudioManager.STREAM_MUSIC, 1);
-        	setStreamVolume(am, AudioManager.STREAM_NOTIFICATION, 1);
-        	setStreamVolume(am, AudioManager.STREAM_RING, 1);
-        	setStreamVolume(am, AudioManager.STREAM_SYSTEM, 1);
-        	setStreamVolume(am, AudioManager.STREAM_VOICE_CALL, 1);
+    		for (int streamId : streams) {
+            	setStreamVolume(am, streamId, volume);
+    		}
 
 			callbackContext.success();
 		}
