@@ -19,6 +19,7 @@ public class PowerControls extends CordovaPlugin {
 	private static final String GET_VOLUME = "getVolume";
 	private static final String SET_VOLUME = "setVolume";
 	private static final String SET_VOLUME_ALL_MAX = "setVolumeMax";
+	private static final String SET_USE_SPEAKER = "setUseSpeaker";
 
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize(cordova, webView);
@@ -47,6 +48,21 @@ public class PowerControls extends CordovaPlugin {
         	return true;
         }
         
+        if (SET_USE_SPEAKER.equals(action)) {
+        	AudioManager am = (AudioManager) webView.getContext().getSystemService(Context.AUDIO_SERVICE);
+        	boolean useSpeaker = args.getBoolean(0);
+        	
+            if(useSpeaker){
+            	am.setMode(AudioManager.MODE_IN_CALL);    
+            	am.setMode(AudioManager.MODE_NORMAL); 
+            } else {
+                //Seems that this back and forth somehow resets the audio channel
+            	am.setMode(AudioManager.MODE_NORMAL);     
+                am.setMode(AudioManager.MODE_IN_CALL);        
+            }
+            am.setSpeakerphoneOn(useSpeaker);
+        }
+
         if (GET_VOLUME.equals(action)) {
         	AudioManager am = (AudioManager) webView.getContext().getSystemService(Context.AUDIO_SERVICE);
 

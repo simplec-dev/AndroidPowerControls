@@ -22,4 +22,8 @@ AndroidPowerControls.prototype.setVolume = function(streamName, intVolumeMax100,
 	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'setVolume', [streamName, intVolumeMax100]);
 };
 
+AndroidPowerControls.prototype.setUseSpeaker = function(successCallback, failureCallback, useSpeaker) {
+	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'setUseSpeaker', [useSpeaker]);
+};
+
 module.exports = new AndroidPowerControls();
