@@ -52,15 +52,18 @@ public class PowerControls extends CordovaPlugin {
         	AudioManager am = (AudioManager) webView.getContext().getSystemService(Context.AUDIO_SERVICE);
         	boolean useSpeaker = args.getBoolean(0);
         	
+        	if (am.isSpeakerphoneOn())
             if(useSpeaker){
-            	am.setMode(AudioManager.MODE_IN_CALL);    
-            	am.setMode(AudioManager.MODE_NORMAL); 
+            	if (!am.isSpeakerphoneOn() || am.getMode()!=AudioManager.MODE_NORMAL) {
+                	am.setMode(AudioManager.MODE_NORMAL); 
+                    am.setSpeakerphoneOn(useSpeaker);
+            	}
             } else {
-                //Seems that this back and forth somehow resets the audio channel
-            	am.setMode(AudioManager.MODE_NORMAL);     
-                am.setMode(AudioManager.MODE_IN_CALL);        
+            	if (am.isSpeakerphoneOn() || am.getMode()!=AudioManager.MODE_IN_CALL) {
+	                am.setMode(AudioManager.MODE_IN_CALL);   
+	                am.setSpeakerphoneOn(useSpeaker);     
+            	}
             }
-            am.setSpeakerphoneOn(useSpeaker);
         }
 
         if (GET_VOLUME.equals(action)) {
