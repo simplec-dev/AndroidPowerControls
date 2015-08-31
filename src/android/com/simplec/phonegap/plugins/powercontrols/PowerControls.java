@@ -52,7 +52,6 @@ public class PowerControls extends CordovaPlugin {
         	AudioManager am = (AudioManager) webView.getContext().getSystemService(Context.AUDIO_SERVICE);
         	boolean useSpeaker = args.getBoolean(0);
         	
-        	if (am.isSpeakerphoneOn())
             if(useSpeaker){
             	if (!am.isSpeakerphoneOn() || am.getMode()!=AudioManager.MODE_NORMAL) {
                 	am.setMode(AudioManager.MODE_NORMAL); 
@@ -64,6 +63,10 @@ public class PowerControls extends CordovaPlugin {
 	                am.setSpeakerphoneOn(useSpeaker);     
             	}
             }
+
+			callbackContext.success();
+			
+        	return true;
         }
 
         if (GET_VOLUME.equals(action)) {
