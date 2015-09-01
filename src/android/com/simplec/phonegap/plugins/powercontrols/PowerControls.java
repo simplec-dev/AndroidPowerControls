@@ -1,8 +1,11 @@
 package com.simplec.phonegap.plugins.powercontrols;
 
+import java.io.File;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaResourceApi;
 import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,21 +14,64 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.PowerManager;
+import android.util.Log;
 
 public class PowerControls extends CordovaPlugin {
+	private static final String LOG_TAG = "AndroidPowerControls";
 	private static final String REBOOT = "reboot";
 	private static final String EXIT = "exit";
 	private static final String GET_VOLUME = "getVolume";
 	private static final String SET_VOLUME = "setVolume";
 	private static final String SET_VOLUME_ALL_MAX = "setVolumeMax";
 	private static final String SET_USE_SPEAKER = "setUseSpeaker";
+	private static final String DELETE_DIR_RECURSIVE = "rmDir";
 
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize(cordova, webView);
 	}
+	
+	public static String stripFileProtocol(String uriString) {
+		if (uriString.startsWith("file://")) {
+			return Uri.parse(uriString).getPath();
+		}
+		return uriString;
+	}
 
 	public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
+		if (DELETE_DIR_RECURSIVE.equals(action)) {
+			try {
+				CordovaResourceApi resourceApi = webView.getResourceApi();
+				String target = args.getString(0);
+
+				String fileUriStr;
+				try {
+					Uri targetUri = resourceApi.remapUri(Uri.parse(target));
+					fileUriStr = targetUri.toString();
+				} catch (IllegalArgumentException e) {
+					fileUriStr = target;
+				}
+
+				Log.v(LOG_TAG, "removing dir: " + fileUriStr);
+
+				final String path = stripFileProtocol(fileUriStr);
+
+				File f = new File(path);
+				if (!f.exists()) {
+					callbackContext.success();
+				} else {
+					Log.v(LOG_TAG, "rm -rf " + path);
+					Runtime.getRuntime().exec("rm -rf " + path);
+					callbackContext.success();
+				}
+			} catch (Exception e) {
+				Log.i(LOG_TAG, e.getMessage());
+				callbackContext.error(e.getMessage());
+			}
+			
+			return true;
+		}
         if (REBOOT.equals(action)) {
         	try {
 	        	PowerManager pm = (PowerManager) webView.getContext().getSystemService(Context.POWER_SERVICE);

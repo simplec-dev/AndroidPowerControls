@@ -26,4 +26,8 @@ AndroidPowerControls.prototype.setUseSpeaker = function(successCallback, failure
 	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'setUseSpeaker', [useSpeaker]);
 };
 
+AndroidPowerControls.prototype.rmDir = function(path, successCallback, failureCallback) {
+	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'rmDir', [path]);
+};
+
 module.exports = new AndroidPowerControls();
