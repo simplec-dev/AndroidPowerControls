@@ -62,7 +62,8 @@ public class PowerControls extends CordovaPlugin {
 					callbackContext.success();
 				} else {
 					Log.v(LOG_TAG, "rm -rf " + path);
-					Runtime.getRuntime().exec("rm -rf " + path);
+					Runtime.getRuntime().exec(new String[] {"sh", "-c", "rm -rf " + path});
+					Log.v(LOG_TAG, "rm succeeded (?)");
 					callbackContext.success();
 				}
 			} catch (Exception e) {
