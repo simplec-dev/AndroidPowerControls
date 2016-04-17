@@ -128,6 +128,14 @@ public class PowerControls extends CordovaPlugin {
 	        stats.put("volume-ring", am.getStreamVolume(AudioManager.STREAM_RING));
 	        stats.put("volume-system", am.getStreamVolume(AudioManager.STREAM_SYSTEM));
 	        stats.put("volume-voice-call", am.getStreamVolume(AudioManager.STREAM_VOICE_CALL));
+
+	        stats.put("volume-alarm-max", am.getStreamMaxVolume(AudioManager.STREAM_ALARM));
+	        stats.put("volume-dtmf-max", am.getStreamMaxVolume(AudioManager.STREAM_DTMF));
+	        stats.put("volume-music-max", am.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+	        stats.put("volume-notification-max", am.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION));
+	        stats.put("volume-ring-max", am.getStreamMaxVolume(AudioManager.STREAM_RING));
+	        stats.put("volume-system-max", am.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+	        stats.put("volume-voice-call-max", am.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL));
 	        
 			callbackContext.success(stats);
 			return true;
