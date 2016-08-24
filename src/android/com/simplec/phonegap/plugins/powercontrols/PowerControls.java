@@ -253,6 +253,9 @@ public class PowerControls extends CordovaPlugin {
 		try {
 	    	int max = am.getStreamMaxVolume(streamId);
 	    	double volume = ((double)max) * streamVolume;
+
+			Log.v(LOG_TAG, "SetVolume: " + streamVolume + " => " + volume + "/"+max);
+			
 	    	if (Math.round(volume)==0) {
 	    		am.setStreamMute(streamId, true);
 	    	} else {
