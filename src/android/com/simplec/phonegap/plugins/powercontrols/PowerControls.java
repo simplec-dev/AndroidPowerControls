@@ -177,6 +177,8 @@ public class PowerControls extends CordovaPlugin {
         	} else if (streamType.equalsIgnoreCase("voice-call")) {
         		streamId = AudioManager.STREAM_VOICE_CALL;
     	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
+        	} else if (streamType.equalsIgnoreCase("")) {
+    	        cordova.getThreadPool().execute(new SetVolume(callbackContext, streamId, streamVolume));
         	} else {
     	        cordova.getThreadPool().execute(new SetAllVolumes(callbackContext, streamVolume));
         	}        	
@@ -266,7 +268,9 @@ public class PowerControls extends CordovaPlugin {
 	    		} catch (Exception e) {
 	    			
 	    		}
-	        	am.setStreamVolume(streamId, (int)Math.round(volume), 0);
+	    		int vol = (int)Math.round(volume);
+				Log.v(LOG_TAG, "SetVolumeInt: " + vol + "/"+max + "("+streamId+")");
+	        	am.setStreamVolume(streamId, vol, 0);
 	    	}
 		} catch (Exception e) {
 			
