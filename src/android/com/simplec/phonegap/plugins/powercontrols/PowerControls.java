@@ -247,7 +247,7 @@ public class PowerControls extends CordovaPlugin {
 
 			callbackContext.success();
 		}
-	}
+	}//
 	
 	public void setStreamVolume(AudioManager am, int streamId, double streamVolume) {
 		try {
