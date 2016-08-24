@@ -151,6 +151,8 @@ public class PowerControls extends CordovaPlugin {
         	double streamVolume = ((double)args.getInt(1))/100;
         	if (streamVolume<0) streamVolume=0;
         	if (streamVolume>1) streamVolume=1;
+
+			Log.v(LOG_TAG, "SetVolume: " + streamVolume + " : " + streamType);
         	
         	int streamId = -1;
         	if (streamType.equalsIgnoreCase("alarm")) {
