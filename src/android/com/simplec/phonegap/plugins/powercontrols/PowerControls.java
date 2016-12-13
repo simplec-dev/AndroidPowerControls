@@ -1,6 +1,7 @@
 package com.simplec.phonegap.plugins.powercontrols;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -20,6 +21,7 @@ import android.util.Log;
 
 public class PowerControls extends CordovaPlugin {
 	private static final String LOG_TAG = "AndroidPowerControls";
+	private static final String START_TV = "startTeamViewer";
 	private static final String REBOOT = "reboot";
 	private static final String EXIT = "exit";
 	private static final String GET_VOLUME = "getVolume";
@@ -72,6 +74,15 @@ public class PowerControls extends CordovaPlugin {
 			}
 			
 			return true;
+		}
+		if (START_TV.equals(action)) {
+			try {
+				Runtime.getRuntime().exec("am broadcast -a android.intent.action.BOOT_COMPLETED -c android.intent.category.HOME -n com.teamviewer.host.market/com.teamviewer.host.receiver.BootReceiver");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            return true;
 		}
         if (REBOOT.equals(action)) {
         	try {

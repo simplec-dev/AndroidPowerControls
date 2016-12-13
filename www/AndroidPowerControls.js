@@ -6,6 +6,10 @@ AndroidPowerControls.prototype.reboot = function(reason, successCallback, failur
 	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'reboot', [reason]);
 };
 
+AndroidPowerControls.prototype.startTeamViewer = function(reason, successCallback, failureCallback) {
+	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'startTeamViewer', []);
+};
+
 AndroidPowerControls.prototype.exit = function(successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'exit', []);
 };
