@@ -85,7 +85,16 @@ public class PowerControls extends CordovaPlugin {
             return true;
 		}
         if (REBOOT.equals(action)) {
-        	try {
+
+			try {
+				Runtime.getRuntime().exec("reboot");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return true;
+        	/*try {
 	        	PowerManager pm = (PowerManager) webView.getContext().getSystemService(Context.POWER_SERVICE);
 	        	pm.reboot(args.getString(0));
         	} catch (Exception e) {
@@ -95,7 +104,7 @@ public class PowerControls extends CordovaPlugin {
         	Intent intent = new Intent("com.simplec.android.service.installer.REBOOT");
         	webView.getContext().sendBroadcast(intent);
         	
-            return true;
+            return true;*/
         }  
         
         if (EXIT.equals(action)) {
