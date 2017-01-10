@@ -14,6 +14,10 @@ AndroidPowerControls.prototype.exit = function(successCallback, failureCallback)
 	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'exit', []);
 };
 
+AndroidPowerControls.prototype.restart = function(successCallback, failureCallback) {
+	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'restart', []);
+};
+
 AndroidPowerControls.prototype.getVolume = function(successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'AndroidPowerControls', 'getVolume', []);
 };

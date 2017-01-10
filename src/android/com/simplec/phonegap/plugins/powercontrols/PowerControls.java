@@ -16,13 +16,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.PowerManager;
 import android.util.Log;
 
 public class PowerControls extends CordovaPlugin {
 	private static final String LOG_TAG = "AndroidPowerControls";
 	private static final String START_TV = "startTeamViewer";
 	private static final String REBOOT = "reboot";
+	private static final String RESTART_APP = "restart";
 	private static final String EXIT = "exit";
 	private static final String GET_VOLUME = "getVolume";
 	private static final String SET_VOLUME = "setVolume";
@@ -83,6 +83,14 @@ public class PowerControls extends CordovaPlugin {
 				e.printStackTrace();
 			}
             return true;
+		}
+		if (RESTART_APP.equals(action)) {
+			Intent i = webView.getContext().getPackageManager()
+		             .getLaunchIntentForPackage( webView.getContext().getPackageName() );
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			webView.getContext().startActivity(i);
+			cordova.getActivity().finish();
 		}
         if (REBOOT.equals(action)) {
 
