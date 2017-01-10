@@ -89,8 +89,9 @@ public class PowerControls extends CordovaPlugin {
 		             .getLaunchIntentForPackage( webView.getContext().getPackageName() );
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			webView.getContext().startActivity(i);
 			cordova.getActivity().finish();
+			webView.getContext().startActivity(i);
+    		android.os.Process.killProcess(android.os.Process.myPid());
 		}
         if (REBOOT.equals(action)) {
 
